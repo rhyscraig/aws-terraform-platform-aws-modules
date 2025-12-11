@@ -1,0 +1,11 @@
+version: 1
+checkov:
+  enabled: true
+  soft_fail: false
+
+environments:
+  # Dummy environments for validation only
+  dev:
+    account: "000000000000"
+    region: "eu-west-2"
+    backend: { type: "local" }
