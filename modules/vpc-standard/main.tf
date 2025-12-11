@@ -1,5 +1,5 @@
-# Defence-Grade VPC Module
-# Enforces Flow Logs, Private Subnets, and No Default Security Group.
+# Standard VPC Pattern
+# [Best Practice] Private subnets by default, Flow Logs enabled.
 
 data "aws_availability_zones" "available" {
   state = "available"
@@ -20,16 +20,11 @@ module "vpc" {
   single_nat_gateway   = var.environment != "prod" # High Avail only in Prod
   enable_dns_hostnames = true
 
-  # Security: Enable Flow Logs
+  # Security: Enforce Flow Logs
   enable_flow_log                      = true
   create_flow_log_cloudwatch_log_group = true
   create_flow_log_cloudwatch_iam_role  = true
   flow_log_max_aggregation_interval    = 60
-
-  # Security: Remove Default SG Rules
-  manage_default_security_group  = true
-  default_security_group_ingress = []
-  default_security_group_egress  = []
 
   tags = var.tags
 }

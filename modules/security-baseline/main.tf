@@ -1,6 +1,5 @@
-# Account-Level Hardening
-# - Enforce EBS Encryption by Default
-# - Block Public Access for S3 Account-wide
+# Account Hardening
+# [Best Practice] Block S3 Public Access & Enforce Encryption
 
 resource "aws_ebs_encryption_by_default" "enabled" {
   enabled = true
@@ -13,7 +12,6 @@ resource "aws_s3_account_public_access_block" "block_all" {
   restrict_public_buckets = true
 }
 
-# Optional: Password Policy (if not handled by SSO)
 resource "aws_iam_account_password_policy" "strict" {
   minimum_password_length        = 14
   require_lowercase_characters   = true
