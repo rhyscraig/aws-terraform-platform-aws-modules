@@ -1,10 +1,3 @@
-# Standard VPC Pattern
-# [Best Practice] Private subnets by default, Flow Logs enabled.
-
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.0"
@@ -12,15 +5,15 @@ module "vpc" {
   name = var.vpc_name
   cidr = var.cidr_block
 
-  azs             = slice(data.aws_availability_zones.available.names, 0, 3)
+  azs             = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
   private_subnets = [for k, v in local.azs : cidrsubnet(var.cidr_block, 4, k)]
   public_subnets  = [for k, v in local.azs : cidrsubnet(var.cidr_block, 8, k + 48)]
 
   enable_nat_gateway   = true
-  single_nat_gateway   = var.environment != "prod" # High Avail only in Prod
+  single_nat_gateway   = var.environment != "prod"
   enable_dns_hostnames = true
 
-  # Security: Enforce Flow Logs
+  # Security: Flow Logs Enabled by Default
   enable_flow_log                      = true
   create_flow_log_cloudwatch_log_group = true
   create_flow_log_cloudwatch_iam_role  = true
@@ -28,7 +21,4 @@ module "vpc" {
 
   tags = var.tags
 }
-
-locals {
-  azs = slice(data.aws_availability_zones.available.names, 0, 3)
-}
+locals { azs = ["eu-west-2a", "eu-west-2b", "eu-west-2c"] }

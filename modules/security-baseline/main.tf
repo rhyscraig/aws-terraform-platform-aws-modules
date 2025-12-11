@@ -1,6 +1,3 @@
-# Account Hardening
-# [Best Practice] Block S3 Public Access & Enforce Encryption
-
 resource "aws_ebs_encryption_by_default" "enabled" {
   enabled = true
 }
