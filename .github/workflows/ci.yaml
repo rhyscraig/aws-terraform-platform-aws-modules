@@ -1,43 +1,13 @@
 name: Module Validation
-
 on:
   pull_request:
     branches: [ main ]
-  push:
-    branches: [ main ]
-
+permissions:
+  contents: read
 jobs:
-  validate:
-    name: Lint & Secure
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.9.0"
-
-      - name: Terraform Format
-        run: terraform fmt -check -recursive
-
-      - name: Terraform Init & Validate
-        run: |
-          # Init each module directory independently to check for syntax errors
-          for dir in modules/*; do
-            if [ -d "$dir" ]; then
-              echo "Validating $dir..."
-              cd "$dir"
-              terraform init -backend=false
-              terraform validate
-              cd - > /dev/null
-            fi
-          done
-
-      - name: Checkov Security Scan
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: modules
-          soft_fail: false # Fail on security issues
-          quiet: true
+  lint:
+    # Use the shared static analysis workflow
+    uses: BT-IT-Infrastructure-CloudOps/aws-workflows/.github/workflows/reusable-static-analysis.yaml@v0.0.2
+    with:
+      working-directory: "."
+      tflint-version: "latest"
