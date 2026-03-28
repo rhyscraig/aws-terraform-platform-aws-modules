@@ -7,5 +7,5 @@ environments:
   # Dummy environments for validation only
   dev:
     account: "000000000000"
-    region: "eu-west-2"
+    region: "us-east-1"
     backend: { type: "local" }

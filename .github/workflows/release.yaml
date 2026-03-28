@@ -1,14 +1,26 @@
-name: Release
+name: "Module Release"
+
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
     paths:
       - 'modules/**'
-      - '.github/release.yml'
-permissions:
-  contents: write
+
 jobs:
+  # 🛡️ Security
+  scan:
+    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-secret-scan.yaml@main
+
+  # 🧪 Test (Using tfctl to validate modules)
+  validate:
+    needs: [scan]
+    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-static-analysis.yaml@main
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+
+  # 📦 Release
   release:
-    uses: BT-IT-Infrastructure-CloudOps/aws-workflows/.github/workflows/reusable-tagging.yaml@v0.0.2
+    needs: [validate]
+    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-tagging.yaml@main
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

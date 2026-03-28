@@ -5,7 +5,7 @@ module "vpc" {
   name = var.vpc_name
   cidr = var.cidr_block
 
-  azs             = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+  azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
   private_subnets = [for k, v in local.azs : cidrsubnet(var.cidr_block, 4, k)]
   public_subnets  = [for k, v in local.azs : cidrsubnet(var.cidr_block, 8, k + 48)]
 
@@ -21,4 +21,4 @@ module "vpc" {
 
   tags = var.tags
 }
-locals { azs = ["eu-west-2a", "eu-west-2b", "eu-west-2c"] }
+locals { azs = ["us-east-1a", "us-east-1b", "us-east-1c"] }
