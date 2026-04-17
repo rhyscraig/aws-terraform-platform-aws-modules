@@ -9,18 +9,18 @@ on:
 jobs:
   # 🛡️ Security
   scan:
-    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-secret-scan.yaml@main
+    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-secret-scan.yaml@v1.0.0
 
   # 🧪 Test (Using tfctl to validate modules)
   validate:
     needs: [scan]
-    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-static-analysis.yaml@main
+    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-static-analysis.yaml@v1.0.0
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
 
   # 📦 Release
   release:
     needs: [validate]
-    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-tagging.yaml@main
+    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-tagging.yaml@v1.0.0
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
