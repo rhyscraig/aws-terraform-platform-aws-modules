@@ -7,7 +7,7 @@ permissions:
 jobs:
   lint:
     # Use the shared static analysis workflow
-    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-static-analysis.yaml@v1.0.7
+    uses: rhyscraig/aws-terraform-platform-aws-workflows/.github/workflows/reusable-static-analysis.yaml@v2.0.0
     with:
       working-directory: "."
       tflint-version: "latest"
